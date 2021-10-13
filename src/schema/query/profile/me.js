@@ -1,14 +1,18 @@
-const graphql = require("graphql");
+const UserType = require('../../types/user')
 
-const logger = console;
-
-const { GraphQLString } = graphql;
+const logger = console
 
 module.exports = {
-  type: GraphQLString,
+  type: UserType,
   resolve: async (parent, args, context) => {
-    logger.debug(context.id, "Query::fetch jurisdiction");
+    logger.debug(context.id, 'Query::fetch jurisdiction')
 
-    return "me";
+    const user = context.user
+
+    return {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+    }
   },
-};
+}

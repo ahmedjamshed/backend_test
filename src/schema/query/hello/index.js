@@ -1,20 +1,20 @@
-const graphql = require('graphql');
+const graphql = require('graphql')
 
-const RoleService = require('../../../services/role.service');
+const RoleService = require('../../../services/role.service')
 
-const logger = console;
+const logger = console
 
-const { GraphQLString } = graphql;
+const { GraphQLString } = graphql
 
 module.exports = {
-	type: GraphQLString,
-	resolve: async (parent, args, context) => {
-		logger.debug(context.id, 'Query::fetch jurisdiction');
+  type: GraphQLString,
+  resolve: async (parent, args, context) => {
+    logger.debug(context.id, 'Query::fetch jurisdiction')
 
-		// Check Permission
-		// noinspection ES6RedundantAwait
-		await RoleService.checkPermission('canHello', args, context);
+    // Check Permission
+    // noinspection ES6RedundantAwait
+    await RoleService.checkPermission('canHello', args, context)
 
-		return 'world 2';
-	},
-};
+    return 'Hello World!!'
+  },
+}

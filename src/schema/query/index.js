@@ -6,8 +6,7 @@ module.exports = new GraphQLObjectType({
 	name: 'Query',
 	fields: {
 		hello: require('./hello'),
-		uploadAvatar: require('./profile/uploadAvatar'),
-		uploadBackground: require('./profile/uploadBackground'),
 		me: require('./profile/me'),
+		profiles: require('./profiles'),
 	},
 });

@@ -1,25 +1,25 @@
 /**
  * external libs
  */
-const passport = require('passport');
+const passport = require('passport')
 
 /**
  * internal utils
  */
-const { parseAuthorizationHeader } = require('../utils/parse.utils');
+const { parseAuthorizationHeader } = require('../utils/parse.utils')
 
 const SCHEMES = {
-	BEARER: 'bearer',
-	// API_KEY: 'api_key',
-};
+  BEARER: 'bearer',
+  // API_KEY: 'api_key',
+}
 
 const OPTIONS = {
-	[SCHEMES.BEARER]: {
-		assignProperty: 'user',
-	},
-};
+  [SCHEMES.BEARER]: {
+    assignProperty: 'user',
+  },
+}
 
-const defaultPassportParams = { session: false };
+const defaultPassportParams = { session: false }
 
 /**
  * This middleware authenticate by header another strategy.
@@ -33,23 +33,26 @@ const defaultPassportParams = { session: false };
  * @return {Promise<void>}
  */
 module.exports = (req, res, next) => {
-	const { authorization } = req.headers;
+  const { authorization } = req.headers
 
-	if (!authorization) {
-		return next();
-	}
+  if (!authorization) {
+    return next()
+  }
 
-	const { scheme, value } = parseAuthorizationHeader(authorization) || {};
+  const { scheme, value } = parseAuthorizationHeader(authorization) || {}
 
-	if (!scheme || !value) {
-		return next();
-	}
+  if (!scheme || !value) {
+    return next()
+  }
 
-	const usageScheme = SCHEMES[scheme.toUpperCase()];
+  const usageScheme = SCHEMES[scheme.toUpperCase()]
 
-	if (Boolean(usageScheme) === false) {
-		return next();
-	}
+  if (Boolean(usageScheme) === false) {
+    return next()
+  }
 
-	return passport.authenticate(usageScheme, { ...defaultPassportParams, ...OPTIONS[usageScheme] })(req, res, next);
-};
+  return passport.authenticate(usageScheme, {
+    ...defaultPassportParams,
+    ...OPTIONS[usageScheme],
+  })(req, res, next)
+}

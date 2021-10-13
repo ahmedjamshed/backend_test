@@ -1,9 +1,9 @@
 /**
  * Module dependencies
  */
-const { GraphQLSchema } = require('graphql');
+const { GraphQLSchema } = require('graphql')
 
 module.exports = new GraphQLSchema({
-	query: require('./query'),
-	mutation: require('./mutation'),
-});
+  query: require('./query'),
+  mutation: require('./mutation'),
+})

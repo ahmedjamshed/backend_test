@@ -5,9 +5,9 @@ const ProfileService = require('./profile.service')
 const EntityService = require('./entity.service')
 const IdentificationService = require('./identification.service')
 
-const jwt = require('jsonwebtoken');
-const config = require('jsconfig');
-const { Login } = require('../exceptions/auth.exception');
+const jwt = require('jsonwebtoken')
+const config = require('jsconfig')
+const { Login } = require('../exceptions/auth.exception')
 
 const logger = console
 
@@ -23,16 +23,16 @@ class AuthService {
 
     try {
       const identification = await IdentificationService.getByEmail(email)
-      if(!identification) throw Login.attempt()
+      if (!identification) throw Login.attempt()
       const isValidPass = await identification.validPassword(password)
-      if(!isValidPass) throw Login.attempt()
-      const accessToken = jwt.sign({ email }, config.env.appKey);
+      if (!isValidPass) throw Login.attempt()
+      const accessToken = jwt.sign({ email }, config.env.appKey)
       logger.debug('AuthService::login has been processed with success status')
-      
+
       return {
         token_type: 'bearer ',
         access_token: accessToken,
-        refresh_token: '' // Not a proper implementaion
+        refresh_token: '', // Not a proper implementaion
       }
     } catch (e) {
       logger.debug('AuthService::login has been processed with fail status')
@@ -53,12 +53,12 @@ class AuthService {
     try {
       const entity = await EntityService.create({
         email,
-        password
+        password,
       })
-  
+
       await ProfileService.create({
         entity_id: entity._id,
-        vars
+        vars,
       })
       logger.debug(
         'AuthService::register has been processed with success status'

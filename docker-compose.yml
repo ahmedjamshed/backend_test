@@ -9,7 +9,7 @@ services:
       - "minio"
       - "rabbitmq"
     volumes:
-      - /Users/immentia/Desktop/backend_test:/app:ro
+      - /Users/ahmedjamshed/Desktop/QSTL/test_backend:/app:ro
       - /app/node_modules
     ports:
       - "3050:8001"
