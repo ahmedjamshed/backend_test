@@ -22,11 +22,11 @@ module.exports = {
   },
   minio: {
     client: {
-      endPoint: "http://172.20.0.4",
+      endPoint: "172.21.0.2",
       port: 9000,
-      useSSL: true,
-      accessKey: "",
-      secretKey: "",
+      useSSL: false,
+      accessKey: "minioUser",
+      secretKey: "12345678",
     },
     bucketName: "",
     destBucketName: "",
