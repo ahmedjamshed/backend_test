@@ -7,6 +7,7 @@ const passport = require('passport');
 const { v4: uuidv4 } = require('uuid');
 const bodyParser = require('body-parser');
 const { graphqlHTTP } = require('express-graphql');
+const { graphqlUploadExpress } = require('graphql-upload');
 /**
  * internal strategies
  */
@@ -113,6 +114,7 @@ class HttpServer {
 		// add endpoints
 		self.app.use(
 			'/graph',
+			graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 1 }),
 			graphqlHTTP(req => ({
 				schema,
 				context: {
