@@ -35,6 +35,25 @@ class ProfileService {
     }
   }
 
+  static async update(data) {
+    logger.debug('ProfileService::create processing')
+
+    try {
+      const profile = await ProfileModel.findOneAndUpdate({ entity_id: data.entity_id },
+        {$push: {values: {$each: data.vars}}})
+      logger.info('ProfileService::update profile model:', profile)
+
+      logger.debug(
+        'ProfileService::update has been processed with success status'
+      )
+      return profile
+    } catch (e) {
+      logger.debug('ProfileService::update has been processed with fail status')
+      logger.error('ProfileService::update error message:', e.toString())
+      throw e
+    }
+  }
+
   static async getAll() {
     logger.debug('ProfileService::getAll processing')
 

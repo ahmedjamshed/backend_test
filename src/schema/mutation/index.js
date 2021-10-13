@@ -11,5 +11,6 @@ module.exports = new GraphQLObjectType({
 		forgot: require('./auth/forgot'),
 		reset: require('./auth/reset'),
 		uploadAvatar: require('./profile/uploadAvatar'),
+		profile: require('./profile')
 	},
 });
