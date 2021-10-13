@@ -7,6 +7,7 @@ services:
     depends_on:
       - "mongodb"
       - "minio"
+      - "rabbitmq"
     volumes:
       - /Users/immentia/Desktop/backend_test:/app:ro
       - /app/node_modules
@@ -39,6 +40,8 @@ services:
     environment:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
+      MINIO_ACCESS_KEY: minioUser
+      MINIO_SECRET_KEY: 12345678
     command: server --console-address :9001 /data
 
 volumes:

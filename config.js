@@ -22,7 +22,7 @@ module.exports = {
   },
   minio: {
     client: {
-      endPoint: "172.21.0.2",
+      endPoint: "172.22.0.4",
       port: 9000,
       useSSL: false,
       accessKey: "minioUser",
