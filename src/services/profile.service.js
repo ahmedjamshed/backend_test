@@ -2,6 +2,7 @@
  * Models
  */
 const FileModel = require('../db/models/file.model')
+const profileModel = require('../db/models/modifiers/profile.model')
 const ProfileModel = require('../db/models/modifiers/profile.model')
 /**
  * Services
@@ -66,7 +67,7 @@ class ProfileService {
       logger.info('ProfileService::getUploadAvatarPolicy key:', key)
       const policy = await MinioService.presignedPostPolicy(
         key,
-        'image/',
+        'image/*',
         1,
         1024 * 1024 * 10
       )
@@ -94,6 +95,53 @@ class ProfileService {
         'ProfileService::getUploadAvatarPolicy has been processed with success status'
       )
       return policy
+    } catch (e) {
+      logger.debug(
+        'ProfileService::getUploadAvatarPolicy has been processed with fail status'
+      )
+      logger.error(
+        'ProfileService::getUploadAvatarPolicy error message:',
+        e.toString()
+      )
+      throw e
+    }
+  }
+
+  static async getUploadAvatarInfo(entity_id, filename) {
+    logger.debug('ProfileService::getUploadAvatarPolicy processing')
+
+    try {
+      const profile = await profileModel.findOne({entity_id})
+      const extension = /(?:\.([^.]+))?$/.exec(filename)[1]
+      const directory = `avatars/${profile._id}`
+      // noinspection JSUnresolvedVariable
+      const key = `${directory}/avatar.${extension}`
+      const name = `avatar.${extension}`
+
+      logger.info('ProfileService::getUploadAvatarPolicy key:', key)
+ 
+      await FileModel.create({
+        title: 'avatar',
+        description: 'avatar',
+        data_link: key,
+        extension,
+        icon: 'picture',
+        metadata: [
+          {
+            key: 'directory',
+            value: directory,
+          },
+          {
+            key: 'profile',
+            value: profile._id,
+          },
+        ],
+      })
+
+      logger.debug(
+        'ProfileService::getUploadAvatarPolicy has been processed with success status'
+      )
+      return { key }
     } catch (e) {
       logger.debug(
         'ProfileService::getUploadAvatarPolicy has been processed with fail status'

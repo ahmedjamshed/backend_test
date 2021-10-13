@@ -1,5 +1,6 @@
 var Minio = require("minio");
 const config = require("jsconfig");
+const ProfileService = require('./profile.service');
 
 const logger = console;
 
@@ -22,13 +23,22 @@ class MinioService {
     }
   }
 
-  static async upload(file) {
+  static async presignedPostPolicy(key) {
+    const self = MinioService
+    const policy = self.minioClient.newPostPolicy()
+    policy.setBucket('avatars')
+    policy.setContentType('text/plain')
+    policy.setKey(key)
+    
+  }
+  static async upload(entity_id, file) {
     try {
       const self = MinioService
       const { createReadStream, filename } = await file;
+      const { key } = await ProfileService.getUploadAvatarInfo(entity_id, filename);
       const stream = createReadStream();
-      await self.minioClient.putObject('avatars', filename, stream);
-      logger.debug("MinioService::upload has been processed with success status");
+      const info = await self.minioClient.putObject('avatars', key, stream);
+      logger.debug("MinioService::upload has been processed with success status", info);
       return 
     } catch (e) {
       logger.debug("MinioService::upload has been processed with fail status");

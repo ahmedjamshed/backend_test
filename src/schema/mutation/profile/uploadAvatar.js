@@ -5,6 +5,7 @@ const logger = console
 const { GraphQLString, GraphQLNonNull, GraphQLObjectType } = graphql
 
 const { GraphQLUpload } = require('graphql-upload')
+const profileModel = require('../../../db/models/modifiers/profile.model')
 
 module.exports = {
   type: GraphQLString,
@@ -16,11 +17,12 @@ module.exports = {
   },
   resolve: async (parent, { file }, context) => {
     try {
-      logger.debug(context.id, 'Mutation::fetch jurisdiction')
-      await MinioService.upload(file)
+      logger.debug(context.user, 'Mutation::fetch jurisdiction')
+      await MinioService.upload(context.user.entity_id, file)
       return "success"
     }
     catch (e) {
+      logger.error(e.toString())
       return "failed"
     }
   },
